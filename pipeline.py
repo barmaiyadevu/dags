@@ -15,13 +15,13 @@ def processo_etl_spark():
   .appName("chispa")
   .getOrCreate())
 
-sc = SparkContext.getOrCreate()
+    sc = SparkContext.getOrCreate()
 
 
-file =spark.read.csv("2008-2021_US_Movies.csv")
-columns1 = ["Release_Date","Title","company","Cast ","Cast","Genre"]
+    file =spark.read.csv("2008-2021_US_Movies.csv")
+    columns1 = ["Release_Date","Title","company","Cast ","Cast","Genre"]
 
-file.show()
+    file.show()
 
 #**************************************************************************************
 
