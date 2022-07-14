@@ -1,28 +1,46 @@
-import datetime
+from datetime import datetime, timedelta
 
-import pendulum
 
 from airflow import DAG
+from airflow.operators.python_operator import PythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
+from pyspark import SparkContext
+from pyspark.sql import SparkSession
 
-with DAG(
-    dag_id='pipeline 1 ',
-    schedule_interval='@daily',
-    start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
-    catchup=False,
-    description='Hello World DAG pipline'
-   
-    
-) as dag:
+# spark code section
+def processo_etl_spark():
+    spark = (SparkSession.builder
+  .master("local")
+  .appName("chispa")
+  .getOrCreate())
 
-        task1=BashOperator(
-            task_id="task1",
-            bash_command="echo task 1"
-        )
+sc = SparkContext.getOrCreate()
 
-        task2=BashOperator(
-            task_id="task2",
-            bash_command="echo task 2"
-        )
-        task1.set_downstream(task2)
+
+file =spark.read.csv("2008-2021_US_Movies.csv")
+columns1 = ["Release_Date","Title","company","Cast ","Cast","Genre"]
+
+file.show()
+
+#**************************************************************************************
+
+#*****************DAG section************************************************************88
+default_args = {
+    'owner': 'jozimar',
+    'start_date': datetime(2020, 11, 18),
+    'retries': 10,
+	  'retry_delay': timedelta(hours=1)
+}
+with DAG('dag_teste_spark_documento_vencido_v01',
+                  default_args=default_args,
+                  schedule_interval='0 1 * * *') as dag:
+
+    task_elt_documento_pagar = PythonOperator(
+        task_id='elt_documento_pagar_spark',
+        python_callable=processo_etl_spark
+    )
+
+    task_elt_documento_pagar
+
+   #*********************************************************************************     
