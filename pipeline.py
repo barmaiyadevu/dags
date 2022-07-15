@@ -16,7 +16,7 @@ dag_spark =DAG('sparksubmit_v01',
 
 spark_submit_local = SparkSubmitOperator(
 		application ='fileread.py' ,
-		conn_id= 'spark_local', 
+		conn_id= 'spark_default', 
 		task_id='spark_submit_task', 
 		dag=dag_spark
 		)
