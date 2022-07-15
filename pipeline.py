@@ -1,28 +1,7 @@
 from datetime import datetime, timedelta
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
-from airflow.operators.bash import BashOperator
-from airflow.operators.empty import EmptyOperator
-from pyspark import SparkContext
-from pyspark.sql import SparkSession
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 
-# spark code section
-def processo_etl_spark():
-    spark = (SparkSession.builder
-  .master("local")
-  .appName("chispa")
-  .getOrCreate())
-
-    sc = SparkContext.getOrCreate()
-
-
-    file =spark.read.csv("2008-2021_US_Movies.csv")
-    columns1 = ["Release_Date","Title","company","Cast ","Cast","Genre"]
-
-    file.show()
-
-#**************************************************************************************
 
 #*****************DAG section************************************************************88
 default_args = {
@@ -33,7 +12,7 @@ default_args = {
 }
 dag_spark =DAG('dag_teste_spark_documento_vencido_v01',
                   default_args=default_args,
-                  schedule_interval='None') 
+                  schedule_interval='0 12 * * *') 
 
 spark_submit_local = SparkSubmitOperator(
 		application ='fileread.py' ,
