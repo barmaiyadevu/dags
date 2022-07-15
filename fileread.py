@@ -20,7 +20,7 @@
 
 from pyspark import SparkContext
     
-logFilepath = "file:////wordcount.txt"  
+logFilepath = "wordcount.txt"  
 sc = SparkContext("local", "first app")
 logData = sc.textFile(logFilepath).cache()
 numAs = logData.filter(lambda s: 'a' in s).count()
