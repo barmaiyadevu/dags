@@ -10,7 +10,7 @@ default_args = {
     'retries': 10,
 	  'retry_delay': timedelta(hours=1)
 }
-dag_spark =DAG('sparksubmit_v01',
+dag_spark =DAG('sparksubmit_v02',
                   default_args=default_args,
                   schedule_interval='0 12 * * *') 
 
