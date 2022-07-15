@@ -33,7 +33,7 @@ default_args = {
 }
 dag_spark =DAG('dag_teste_spark_documento_vencido_v01',
                   default_args=default_args,
-                  schedule_interval='0 1 * * *') 
+                  schedule_interval='None') 
 
 spark_submit_local = SparkSubmitOperator(
 		application ='fileread.py' ,
